@@ -69,8 +69,10 @@ module OpenTelemetry
             def add_span_timestamps(span, msg)
               created_at = msg['created_at']
               enqueued_at = msg['enqueued_at']
+              scheduled_at = time_from_timestamp(msg['at']) unless msg['at'].nil?
               span.add_event('created_at', timestamp: time_from_timestamp(created_at)) if created_at
               span.add_event('enqueued_at', timestamp: time_from_timestamp(enqueued_at)) if enqueued_at
+              span.add_event('scheduled_at', timestamp: scheduled_at) unless scheduled_at.nil?
             end
 
             def time_from_timestamp(timestamp)
